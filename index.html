@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>DEQvision Intelligence</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:#fff;
+  color:#1d1d1f;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  font-size:16px;
+}
+
+/* ─── NAV ──────────────────────────────────────────────────── */
+.nav{
+  position:sticky;top:0;z-index:100;
+  height:52px;
+  background:rgba(255,255,255,.9);
+  backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid rgba(0,0,0,.07);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;
+}
+.nav-brand{display:flex;align-items:center;gap:8px}
+.brand-mark{
+  width:28px;height:28px;border-radius:8px;
+  background:#1d1d1f;
+  display:flex;align-items:center;justify-content:center;
+}
+.brand-mark svg{width:15px;height:15px}
+.brand-name{font-size:.88rem;font-weight:700;letter-spacing:-.01em;color:#1d1d1f}
+.brand-dot{color:#c7c7cc;margin:0 4px}
+.brand-sub{font-size:.78rem;color:#8e8e93;font-weight:400}
+
+.nav-tabs{display:flex;gap:2px}
+.ntab{
+  font-size:.8rem;font-weight:500;color:#636366;
+  padding:6px 14px;border-radius:8px;
+  border:none;background:transparent;cursor:pointer;
+  font-family:inherit;transition:all .15s;
+}
+.ntab:hover{color:#1d1d1f;background:#f2f2f7}
+.ntab.on{color:#1d1d1f;background:#f2f2f7}
+
+.nav-pill{
+  font-size:.68rem;font-weight:600;color:#8e8e93;
+  background:#f2f2f7;padding:3px 12px;border-radius:100px;
+}
+
+/* ─── PAGES ────────────────────────────────────────────────── */
+.pg{display:none}
+.pg.on{display:block}
+
+/* ─── HOME ─────────────────────────────────────────────────── */
+
+/* Split hero */
+.hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:56px;
+  max-width:1160px;
+  margin:0 auto;
+  padding:72px 48px 64px;
+  align-items:center;
+}
+
+/* Left */
+.hero-l{display:flex;flex-direction:column;align-items:flex-start}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  background:#f2f2f7;border-radius:100px;
+  padding:5px 14px;
+  font-size:.72rem;font-weight:600;color:#636366;
+  letter-spacing:.03em;margin-bottom:20px;
+}
+.edot{
+  width:6px;height:6px;border-radius:50%;
+  background:#0071e3;flex-shrink:0;
+}
+
+.htitle{
+  font-size:3rem;font-weight:800;
+  line-height:1.07;letter-spacing:-.04em;
+  color:#1d1d1f;margin-bottom:18px;
+}
+.htitle-dim{color:#636366}
+
+.hdesc{
+  font-size:.97rem;line-height:1.7;
+  color:#8e8e93;max-width:420px;
+  margin-bottom:28px;
+}
+
+.hctas{display:flex;gap:10px}
+.btn-p{
+  background:#0071e3;color:#fff;
+  border:none;border-radius:980px;
+  font-size:.88rem;font-weight:600;
+  padding:12px 24px;cursor:pointer;
+  font-family:inherit;letter-spacing:-.01em;
+  transition:background .15s;
+}
+.btn-p:hover{background:#0064c8}
+.btn-s{
+  background:#f2f2f7;color:#1d1d1f;
+  border:none;border-radius:980px;
+  font-size:.88rem;font-weight:600;
+  padding:12px 22px;cursor:pointer;
+  font-family:inherit;transition:background .15s;
+}
+.btn-s:hover{background:#e5e5ea}
+
+/* Right — agent card */
+.hero-r{}
+
+.sim-card{
+  background:#f9f9f9;
+  border:1px solid #e5e5ea;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 2px 24px rgba(0,0,0,.06);
+}
+
+.sc-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;
+  background:#fff;
+  border-bottom:1px solid #f2f2f7;
+}
+.sc-label{
+  font-size:.68rem;font-weight:700;
+  color:#8e8e93;letter-spacing:.08em;text-transform:uppercase;
+}
+.sc-status{
+  display:flex;align-items:center;gap:6px;
+  font-size:.72rem;font-weight:500;color:#34c759;
+}
+.sdot{
+  width:7px;height:7px;border-radius:50%;
+  background:#34c759;
+  animation:pulseG 2s infinite;
+}
+@keyframes pulseG{
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(52,199,89,.4)}
+  50%{opacity:.7;box-shadow:0 0 0 4px rgba(52,199,89,0)}
+}
+
+/* 2x5 agent grid */
+.ag{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  padding:16px;
+}
+
+.ac{
+  background:#fff;
+  border:1px solid #e5e5ea;
+  border-radius:12px;
+  padding:12px 8px 10px;
+  text-align:center;
+  transition:box-shadow .15s;
+}
+.ac:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+
+.av{
+  width:36px;height:36px;
+  border-radius:50%;
+  background:#f2f2f7;
+  margin:0 auto 8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.58rem;font-weight:700;color:#636366;
+}
+
+.an{
+  font-size:.65rem;font-weight:600;
+  color:#1d1d1f;
+  margin-bottom:5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+.atag{
+  display:inline-block;
+  font-size:.56rem;font-weight:600;
+  padding:2px 7px;border-radius:100px;
+}
+.pos{background:rgba(52,199,89,.12);color:#34c759}
+.neg{background:rgba(255,59,48,.10);color:#ff3b30}
+.neu{background:#f2f2f7;color:#8e8e93}
+
+.sc-foot{
+  display:flex;justify-content:space-around;
+  padding:14px 20px;
+  background:#fff;
+  border-top:1px solid #f2f2f7;
+}
+.ss{display:flex;flex-direction:column;align-items:center;gap:2px}
+.sn{font-size:1.1rem;font-weight:700;color:#1d1d1f;letter-spacing:-.02em}
+.sl{font-size:.6rem;font-weight:500;color:#aeaeb2;text-transform:uppercase;letter-spacing:.06em}
+
+/* ─── FEATURE SECTION ──────────────────────────────────────── */
+.fsec{
+  background:#f9f9f9;
+  border-top:1px solid #e5e5ea;
+  padding:72px 48px;
+}
+.fsec-inner{max-width:1060px;margin:0 auto}
+
+.sec-eyebrow{
+  font-size:.68rem;font-weight:700;
+  color:#aeaeb2;letter-spacing:.1em;text-transform:uppercase;
+  text-align:center;margin-bottom:8px;
+}
+.sec-title{
+  font-size:2rem;font-weight:700;
+  letter-spacing:-.03em;color:#1d1d1f;
+  text-align:center;margin-bottom:8px;
+}
+.sec-sub{
+  font-size:.92rem;color:#8e8e93;
+  text-align:center;max-width:440px;
+  margin:0 auto 44px;line-height:1.6;
+}
+
+.fgrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.fc{
+  background:#fff;
+  border:1px solid #e5e5ea;
+  border-radius:16px;
+  padding:24px 22px;
+  transition:box-shadow .2s,transform .2s;
+}
+.fc:hover{box-shadow:0 8px 28px rgba(0,0,0,.07);transform:translateY(-2px)}
+
+.fi{
+  width:42px;height:42px;border-radius:12px;
+  background:#f2f2f7;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;margin-bottom:14px;
+}
+.ft{font-size:.88rem;font-weight:700;color:#1d1d1f;margin-bottom:6px;letter-spacing:-.01em}
+.fd{font-size:.78rem;color:#8e8e93;line-height:1.6}
+
+/* ─── WORKFLOW SECTION (dark) ─────────────────────────────── */
+.wsec{
+  background:#1d1d1f;
+  padding:72px 48px;
+}
+.wsec-inner{max-width:700px;margin:0 auto}
+.wsec .sec-eyebrow{color:#48484a}
+.wsec .sec-title{color:#fff}
+.wsec .sec-sub{color:#636366}
+
+.steps{display:flex;flex-direction:column}
+.step{
+  display:flex;gap:18px;
+  padding:22px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  align-items:flex-start;
+}
+.step:last-child{border-bottom:none}
+
+.snum{
+  width:30px;height:30px;flex-shrink:0;
+  border-radius:9px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;font-weight:700;color:#48484a;
+  margin-top:2px;
+}
+.scontent{}
+.stitle{font-size:.95rem;font-weight:600;color:#fff;margin-bottom:4px;letter-spacing:-.01em}
+.sdesc{font-size:.78rem;color:#636366;line-height:1.55}
+.stag{
+  display:inline-block;margin-top:6px;
+  font-size:.58rem;font-weight:600;letter-spacing:.04em;
+  color:rgba(0,113,227,.9);
+  background:rgba(0,113,227,.12);
+  padding:2px 8px;border-radius:100px;
+}
+
+/* ─── BRIEF PAGE ──────────────────────────────────────────── */
+.bpg{
+  min-height:100vh;
+  background:#f9f9f9;
+  padding:48px 48px 80px;
+}
+.binner{max-width:820px;margin:0 auto}
+
+.ph2{font-size:1.8rem;font-weight:700;letter-spacing:-.03em;color:#1d1d1f;margin-bottom:6px}
+.ph-sub{font-size:.88rem;color:#8e8e93;margin-bottom:28px}
+
+.bcard{
+  background:#fff;
+  border:1px solid #e5e5ea;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 2px 16px rgba(0,0,0,.04);
+  margin-bottom:20px;
+}
+.bcard-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 22px;
+  border-bottom:1px solid #f2f2f7;
+}
+.bcard-hl{display:flex;align-items:center;gap:10px}
+.bcard-ico{
+  width:30px;height:30px;border-radius:8px;
+  background:#f2f2f7;
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;
+}
+.bcard-t{font-size:.85rem;font-weight:600;color:#1d1d1f}
+.agents-badge{
+  font-size:.62rem;font-weight:600;
+  color:#0071e3;background:rgba(0,113,227,.1);
+  padding:3px 10px;border-radius:100px;
+}
+.bcard-hr{display:flex;gap:8px;align-items:center}
+
+.tpl-sel{
+  background:#f2f2f7;border:none;border-radius:8px;
+  color:#636366;font-size:.76rem;font-weight:500;
+  padding:7px 12px;cursor:pointer;outline:none;font-family:inherit;
+  transition:background .15s;
+}
+.tpl-sel:focus{background:#e5e5ea}
+
+.btn-save{
+  background:#0071e3;color:#fff;
+  border:none;border-radius:8px;
+  font-size:.76rem;font-weight:600;
+  padding:7px 18px;cursor:pointer;font-family:inherit;
+  transition:background .15s;
+}
+.btn-save:hover{background:#0064c8}
+
+.bfields{padding:22px}
+
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+
+.fg{display:flex;flex-direction:column;gap:5px}
+.fl{
+  font-size:.62rem;font-weight:700;
+  color:#aeaeb2;text-transform:uppercase;letter-spacing:.07em;
+}
+.fi-input,.fi-ta{
+  background:#f9f9f9;border:1px solid #e5e5ea;
+  border-radius:10px;color:#1d1d1f;
+  font-size:.84rem;padding:9px 13px;
+  outline:none;transition:border-color .15s,box-shadow .15s;
+  font-family:inherit;width:100%;
+}
+.fi-input:focus,.fi-ta:focus{
+  border-color:#0071e3;
+  box-shadow:0 0 0 3px rgba(0,113,227,.12);
+  background:#fff;
+}
+.fi-input::placeholder,.fi-ta::placeholder{color:#d1d1d6}
+.fi-ta{resize:vertical}
+
+.bpreview{
+  background:#f0f7ff;
+  border-top:1px solid rgba(0,113,227,.12);
+  display:none;
+}
+.bpreview.show{display:block}
+.bprev-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;border-bottom:1px solid rgba(0,113,227,.1);
+}
+.bprev-lbl{
+  font-size:.62rem;font-weight:700;
+  color:rgba(0,113,227,.6);text-transform:uppercase;letter-spacing:.08em;
+}
+.btn-copy{
+  background:transparent;border:1px solid rgba(0,113,227,.25);
+  border-radius:6px;color:#0071e3;font-size:.65rem;font-weight:500;
+  padding:2px 10px;cursor:pointer;font-family:inherit;
+}
+.btn-copy:hover{background:rgba(0,113,227,.06)}
+.bprev-text{
+  font-family:'SF Mono','Fira Code','Courier New',monospace;
+  font-size:.7rem;color:#004499;
+  padding:14px 18px;margin:0;
+  white-space:pre-wrap;word-break:break-word;line-height:1.7;
+}
+
+.saved-sec{margin-top:20px}
+.saved-lbl{
+  font-size:.68rem;font-weight:700;
+  color:#aeaeb2;text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:10px;
+}
+.bi{
+  background:#fff;border:1px solid #e5e5ea;
+  border-radius:13px;padding:14px 18px;
+  margin-bottom:8px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:box-shadow .15s,border-color .15s;
+}
+.bi:hover{box-shadow:0 2px 12px rgba(0,0,0,.06);border-color:#d1d1d6}
+.bi-name{font-size:.84rem;font-weight:600;color:#1d1d1f;margin-bottom:3px}
+.bi-meta{font-size:.7rem;color:#aeaeb2}
+.bi-tag{
+  font-size:.62rem;font-weight:600;
+  color:#0071e3;background:rgba(0,113,227,.09);
+  padding:3px 10px;border-radius:100px;white-space:nowrap;
+}
+
+/* ─── PROCESS PAGE ────────────────────────────────────────── */
+.proc{
+  display:grid;
+  grid-template-columns:1fr 360px;
+  height:calc(100vh - 52px);
+}
+.proc-l{
+  border-right:1px solid #e5e5ea;
+  background:#f9f9f9;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.gl-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;background:#fff;border-bottom:1px solid #f2f2f7;
+}
+.gl-title{font-size:.78rem;font-weight:600;color:#1d1d1f}
+.gl-stats{display:flex;gap:14px}
+.gl-stat{font-size:.7rem;color:#8e8e93}
+.gl-stat strong{color:#1d1d1f;font-weight:600}
+.graph-wrap{flex:1;position:relative;overflow:hidden}
+.graph-wrap svg{width:100%;height:100%}
+
+.proc-r{
+  background:#fff;overflow-y:auto;padding:16px;
+}
+.proc-back{
+  font-size:.78rem;font-weight:600;
+  color:#0071e3;cursor:pointer;
+  display:flex;align-items:center;gap:4px;
+  margin-bottom:14px;
+}
+
+.active-brief{
+  background:rgba(0,113,227,.06);
+  border:1px solid rgba(0,113,227,.14);
+  border-radius:12px;padding:12px 14px;margin-bottom:14px;
+}
+.ab-lbl{
+  font-size:.58rem;font-weight:700;
+  color:rgba(0,113,227,.55);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;
+}
+.ab-name{font-size:.82rem;font-weight:600;color:#1d1d1f;margin-bottom:2px}
+.ab-hyp{font-size:.7rem;color:#8e8e93;line-height:1.4}
+
+.sc2{
+  background:#fff;border:1px solid #e5e5ea;
+  border-radius:13px;padding:13px 15px;margin-bottom:8px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.sc2.act{border-color:#0071e3;box-shadow:0 0 0 3px rgba(0,113,227,.08)}
+.sc2.done{border-color:rgba(52,199,89,.3);background:rgba(52,199,89,.02)}
+
+.ct{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.cl{display:flex;align-items:center;gap:9px}
+.cidx{font-size:.6rem;font-weight:700;color:#d1d1d6;width:16px}
+.cname{font-size:.8rem;font-weight:600;color:#1d1d1f}
+
+.badge{
+  font-size:.6rem;font-weight:600;
+  padding:2px 8px;border-radius:100px;
+}
+.b-pend{background:#f2f2f7;color:#aeaeb2}
+.b-act{background:rgba(0,113,227,.1);color:#0071e3}
+.b-done{background:rgba(52,199,89,.12);color:#34c759}
+.b-pct{background:rgba(0,113,227,.1);color:#0071e3}
+
+.c-api{
+  font-size:.6rem;color:#d1d1d6;
+  font-family:'SF Mono',monospace;
+  padding-left:25px;margin-bottom:4px;
+}
+.c-desc{font-size:.7rem;color:#aeaeb2;line-height:1.5;padding-left:25px}
+
+.prog{
+  height:3px;background:#f2f2f7;border-radius:2px;
+  overflow:hidden;margin:8px 0 0 25px;
+}
+.prog-f{height:100%;background:#0071e3;border-radius:2px}
+
+.lim-row{
+  display:flex;align-items:center;gap:7px;
+  margin-top:7px;padding-left:25px;
+}
+.lim-lbl{font-size:.62rem;color:#aeaeb2}
+.lim-tr{flex:1;height:3px;background:#f2f2f7;border-radius:2px}
+.lim-fl{height:100%;width:100%;background:#0071e3;border-radius:2px}
+.lim-n{font-size:.62rem;font-weight:600;color:#0071e3}
+
+.log{
+  margin-top:8px;margin-left:25px;
+  background:#f9f9f9;border:1px solid #f2f2f7;
+  border-radius:8px;padding:9px 11px;max-height:96px;overflow-y:auto;
+}
+.ll{font-family:'SF Mono','Fira Code',monospace;font-size:.6rem;line-height:1.75;color:#aeaeb2}
+.ll.ok{color:#34c759}
+.ll.inf{color:#0071e3}
+.ll.em{color:#1d1d1f;font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L4 7v10l8 5 8-5V7L12 2z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M12 2v20M4 7l8 5 8-5" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="brand-name">DEQvision</span>
+    <span class="brand-dot">·</span>
+    <span class="brand-sub">Intelligence</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="ntab on" onclick="show('home',this)">Начало</button>
+    <button class="ntab" onclick="show('brief',this)">Брийф</button>
+    <button class="ntab" onclick="show('proc',this)">Симулация</button>
+  </div>
+  <div class="nav-pill">10 агента</div>
+</nav>
+
+<!-- ════════════ HOME ════════════ -->
+<div id="pg-home" class="pg on">
+
+  <!-- Split hero -->
+  <div class="hero">
+    <!-- Left copy -->
+    <div class="hero-l">
+      <div class="eyebrow"><span class="edot"></span>Групова интелигентност · Агенция Рисърч</div>
+      <h1 class="htitle">Симулирай<br>аудиторията<br><span class="htitle-dim">преди да похарчиш бюджета.</span></h1>
+      <p class="hdesc">Качи клиентски материали, формулирай хипотезата и стартирай 10-агентна социална симулация. Получи пълен анализ — реакции, поведение и предсказания — за минути.</p>
+      <div class="hctas">
+        <button class="btn-p" onclick="show('brief',document.querySelectorAll('.ntab')[1])">Нова симулация</button>
+        <button class="btn-s">Виж историята</button>
+      </div>
+    </div>
+
+    <!-- Right agent card -->
+    <div class="hero-r">
+      <div class="sim-card">
+        <div class="sc-head">
+          <span class="sc-label">Активна симулация</span>
+          <div class="sc-status"><span class="sdot"></span>В процес</div>
+        </div>
+        <div class="ag">
+          <div class="ac"><div class="av">КМ</div><div class="an">Клиент М.</div><span class="atag pos">поддържа</span></div>
+          <div class="ac"><div class="av">СК</div><div class="an">Скептик К.</div><span class="atag neg">против</span></div>
+          <div class="ac"><div class="av">ЛТ</div><div class="an">Лоялен Т.</div><span class="atag pos">поддържа</span></div>
+          <div class="ac"><div class="av">РБ</div><div class="an">Изследовател</div><span class="atag neu">наблюдава</span></div>
+          <div class="ac"><div class="av">АП</div><div class="an">Адвокат П.</div><span class="atag pos">промотира</span></div>
+          <div class="ac"><div class="av">МН</div><div class="an">Неутрален Н.</div><span class="atag neu">неутрален</span></div>
+          <div class="ac"><div class="av">ИХ</div><div class="an">Инфлуенсър</div><span class="atag pos">усилва</span></div>
+          <div class="ac"><div class="av">ВО</div><div class="an">Стойност О.</div><span class="atag neg">скептичен</span></div>
+          <div class="ac"><div class="av">РА</div><div class="an">Ранен А.</div><span class="atag pos">купува рано</span></div>
+          <div class="ac"><div class="av">ДС</div><div class="an">Оферта Д.</div><span class="atag neu">изчаква</span></div>
+        </div>
+        <div class="sc-foot">
+          <div class="ss"><span class="sn">10</span><span class="sl">Агента</span></div>
+          <div class="ss"><span class="sn">72ч</span><span class="sl">Симулирано</span></div>
+          <div class="ss"><span class="sn">~€0.40</span><span class="sl">Цена</span></div>
+          <div class="ss"><span class="sn">5</span><span class="sl">Стъпки</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="fsec">
+    <div class="fsec-inner">
+      <div class="sec-eyebrow">Приложения</div>
+      <div class="sec-title">За всяка маркетинг задача.</div>
+      <div class="sec-sub">Тествай хипотезата преди кампанията, не след нея.</div>
+      <div class="fgrid">
+        <div class="fc"><div class="fi">🛍️</div><div class="ft">Ecom лансиране</div><div class="fd">Как ще реагира аудиторията на новия продукт? Кои са блокерите за покупка?</div></div>
+        <div class="fc"><div class="fi">🔬</div><div class="ft">A/B месидж тест</div><div class="fd">Кое послание резонира повече преди да разпределиш медийния бюджет?</div></div>
+        <div class="fc"><div class="fi">🎯</div><div class="ft">Поведение на аудиторията</div><div class="fd">Картографирай как различните персони реагират и кой е най-близо до конверсия.</div></div>
+        <div class="fc"><div class="fi">⚡</div><div class="ft">Кризисен сценарий</div><div class="fd">Симулирай реакцията при PR криза и тествай стратегии за отговор.</div></div>
+        <div class="fc"><div class="fi">💡</div><div class="ft">Хипотеза тестване</div><div class="fd">Всяко маркетинг предположение може да се тества и валидира предварително.</div></div>
+        <div class="fc"><div class="fi">📊</div><div class="ft">Дълбок анализ</div><div class="fd">InsightForge атрибуция, PanoramaSearch flow tracking и интервюта с агентите.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Workflow dark -->
+  <div class="wsec">
+    <div class="wsec-inner">
+      <div class="sec-eyebrow">Процес</div>
+      <div class="sec-title">Пет стъпки до инсайта.</div>
+      <div class="sec-sub">Автоматизиран pipeline от документи до предсказание.</div>
+      <div class="steps">
+        <div class="step"><div class="snum">01</div><div class="scontent"><div class="stitle">Изграждане на граф</div><div class="sdesc">Качи клиентски материали (PDF, анализи) → системата автоматично изгражда GraphRAG база от знания.</div><span class="stag">POST /api/graph/build</span></div></div>
+        <div class="step"><div class="snum">02</div><div class="scontent"><div class="stitle">Брийф + Настройка</div><div class="sdesc">Дефинирай клиент, хипотеза, целева аудитория. Системата генерира 10 агентни персони от графа.</div><span class="stag">POST /api/simulation/prepare</span></div></div>
+        <div class="step"><div class="snum">03</div><div class="scontent"><div class="stitle">Стартиране на симулацията</div><div class="sdesc">10 агента взаимодействат в паралелна Twitter + Reddit среда. Real-time граф визуализация.</div><span class="stag">POST /api/simulation/start</span></div></div>
+        <div class="step"><div class="snum">04</div><div class="scontent"><div class="stitle">Аналитичен репорт</div><div class="sdesc">AI генерира структуриран консултантски документ с дълбока атрибуция и ключови инсайти.</div><span class="stag">POST /api/report/generate</span></div></div>
+        <div class="step"><div class="snum">05</div><div class="scontent"><div class="stitle">Дълбоко взаимодействие</div><div class="sdesc">Чат с всеки от 10-те симулирани агента или изпрати survey до всички наведнъж.</div><span class="stag">POST /api/simulation/interview</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ БРИЙФ ════════════ -->
+<div id="pg-brief" class="pg">
+  <div class="bpg">
+    <div class="binner">
+      <div class="ph2">Изследователски брийф</div>
+      <div class="ph-sub">Опиши клиента, хипотезата и целта. Брийфът директно захранва симулационния двигател.</div>
+
+      <div class="bcard">
+        <div class="bcard-head">
+          <div class="bcard-hl">
+            <div class="bcard-ico">📋</div>
+            <span class="bcard-t">Нов брийф</span>
+            <span class="agents-badge">Макс 10 агента</span>
+          </div>
+          <div class="bcard-hr">
+            <select class="tpl-sel" onchange="applyT(this.value)">
+              <option value="">— Зареди шаблон —</option>
+              <option value="ecom">Ecom · Лансиране</option>
+              <option value="ab">Кампания · A/B тест</option>
+              <option value="audience">Аудитория · Поведение</option>
+              <option value="crisis">Криза · PR отговор</option>
+            </select>
+            <button class="btn-save" onclick="saveB()">Запази</button>
+          </div>
+        </div>
+
+        <div class="bfields">
+          <div class="row3">
+            <div class="fg"><label class="fl">Клиент</label><input class="fi-input" id="fc" placeholder="Клиент" oninput="mkPrev()"/></div>
+            <div class="fg"><label class="fl">Продукт / Услуга</label><input class="fi-input" id="fp" placeholder="Какво симулираме?" oninput="mkPrev()"/></div>
+            <div class="fg"><label class="fl">Целева аудитория</label><input class="fi-input" id="fa" placeholder="Пр. Жени 25–35" oninput="mkPrev()"/></div>
+          </div>
+          <div class="row2">
+            <div class="fg"><label class="fl">Хипотеза</label><input class="fi-input" id="fh" placeholder="Какво искаш да тестваш?" oninput="mkPrev()"/></div>
+            <div class="fg"><label class="fl">Изследователска цел</label><input class="fi-input" id="fg2" placeholder="Каквo решение ще подпомогне?" oninput="mkPrev()"/></div>
+          </div>
+          <div class="fg"><label class="fl">Контекст и допълнителна информация</label><textarea class="fi-ta" id="fx" rows="3" placeholder="Цена, конкуренти, възражения, бюджет, платформи..." oninput="mkPrev()"></textarea></div>
+        </div>
+
+        <div class="bpreview" id="bprev">
+          <div class="bprev-head">
+            <span class="bprev-lbl">↳ Автогенериран брийф за симулатора</span>
+            <button class="btn-copy" onclick="copyB()">Копирай</button>
+          </div>
+          <pre class="bprev-text" id="bptext"></pre>
+        </div>
+      </div>
+
+      <div class="saved-sec">
+        <div class="saved-lbl">Запазени брийфове</div>
+        <div class="bi"><div><div class="bi-name">Nike — AW25 Лансиране България</div><div class="bi-meta">22 апр 2026 · Ecom Лансиране</div></div><span class="bi-tag">Ecom</span></div>
+        <div class="bi"><div><div class="bi-name">Клиент X — Sustainability vs. Цена</div><div class="bi-meta">20 апр 2026 · A/B тест</div></div><span class="bi-tag">A/B тест</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ СИМУЛАЦИЯ ════════════ -->
+<div id="pg-proc" class="pg">
+  <div class="proc">
+    <!-- Left graph -->
+    <div class="proc-l">
+      <div class="gl-head">
+        <span class="gl-title">Knowledge Graph — Live</span>
+        <div class="gl-stats">
+          <span class="gl-stat"><strong>10</strong> нода</span>
+          <span class="gl-stat"><strong>24</strong> връзки</span>
+        </div>
+      </div>
+      <div class="graph-wrap">
+        <svg id="gg" viewBox="0 0 700 520"></svg>
+      </div>
+    </div>
+
+    <!-- Right workbench -->
+    <div class="proc-r">
+      <div class="proc-back" onclick="show('home',document.querySelectorAll('.ntab')[0])">← DEQvision</div>
+
+      <div class="active-brief">
+        <div class="ab-lbl">Активен брийф</div>
+        <div class="ab-name">Nike — AW25 Лансиране България</div>
+        <div class="ab-hyp">Хипотеза: Sustainability месиджът ще надмине price месиджа при аудитория 25–35 г.</div>
+      </div>
+
+      <div class="sc2 act">
+        <div class="ct"><div class="cl"><span class="cidx">01</span><span class="cname">Изграждане на граф</span></div><span class="badge b-pct">68%</span></div>
+        <div class="c-api">POST /api/graph/build</div>
+        <div class="c-desc">Извличане на ентитети и изграждане на GraphRAG база.</div>
+        <div class="prog"><div class="prog-f" style="width:68%"></div></div>
+        <div class="lim-row"><span class="lim-lbl">Лимит агенти</span><div class="lim-tr"><div class="lim-fl"></div></div><span class="lim-n">10 / 10</span></div>
+        <div class="log">
+          <div class="ll ok">✓ Онтология: 6 типа ентитети, 8 релации</div>
+          <div class="ll inf">→ Граф: 68% (340/500 чанка)</div>
+          <div class="ll em">● Обработване на партида 3/5...</div>
+          <div class="ll">[DEQvision] Лимит активен: макс 10 агента</div>
+        </div>
+      </div>
+
+      <div class="sc2"><div class="ct"><div class="cl"><span class="cidx">02</span><span class="cname">Брийф + Настройка</span></div><span class="badge b-pend">Изчаква</span></div><div class="c-api">POST /api/simulation/prepare</div><div class="c-desc">Генериране на 10 агентни персони от графа.</div></div>
+      <div class="sc2"><div class="ct"><div class="cl"><span class="cidx">03</span><span class="cname">Стартиране на симулация</span></div><span class="badge b-pend">Изчаква</span></div><div class="c-api">POST /api/simulation/start</div><div class="c-desc">Dual-platform симулация с 10 агента.</div></div>
+      <div class="sc2"><div class="ct"><div class="cl"><span class="cidx">04</span><span class="cname">Аналитичен репорт</span></div><span class="badge b-pend">Изчаква</span></div><div class="c-api">POST /api/report/generate</div><div class="c-desc">InsightForge атрибуция и дълбок анализ.</div></div>
+      <div class="sc2"><div class="ct"><div class="cl"><span class="cidx">05</span><span class="cname">Дълбоко взаимодействие</span></div><span class="badge b-pend">Изчаква</span></div><div class="c-api">POST /api/simulation/interview</div><div class="c-desc">Чат с всеки агент или survey до всички.</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'))
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'))
+  document.getElementById('pg-'+id).classList.add('on')
+  btn.classList.add('on')
+  if(id==='proc') drawG()
+}
+
+// Brief
+function mkPrev(){
+  const c=v('fc'),p=v('fp'),a=v('fa'),h=v('fh'),g=v('fg2'),x=v('fx')
+  const pr=document.getElementById('bprev')
+  if(!c&&!h&&!g){pr.classList.remove('show');return}
+  const pts=[]
+  if(c) pts.push('КЛИЕНТ: '+c)
+  if(p) pts.push('ПРОДУКТ/УСЛУГА: '+p)
+  if(a) pts.push('ЦЕЛЕВА АУДИТОРИЯ: '+a)
+  if(h) pts.push('ХИПОТЕЗА: '+h)
+  if(g) pts.push('ИЗСЛЕДОВАТЕЛСКА ЦЕЛ: '+g)
+  if(x) pts.push('КОНТЕКСТ: '+x)
+  pts.push('БРОЙ АГЕНТИ: 10 (DEQvision оптимизиран)\nИНСТРУКЦИЯ: Симулирай реалистична социална среда с 10 агента, всеки представляващ различна персона. Фокусирай се върху хипотезата и произведи приложими инсайти.')
+  document.getElementById('bptext').textContent=pts.join('\n\n')
+  pr.classList.add('show')
+}
+function v(id){return document.getElementById(id).value.trim()}
+
+const T={
+  ecom:{a:'25–40 г., онлайн купувачи',h:'Месиджът фокусиран върху [ползата] ще надмине [алтернативата].',g:'Симулирай реакцията при лансирането и идентифицирай най-силния месидж ъгъл.',x:'Цена: [€X]. Конкуренти: [A, B]. Възражения: [цена / доверие / нужда].'},
+  ab:{a:'',h:'Творческа посока A ([опиши]) ще генерира по-висок purchase intent от посока B ([опиши]).',g:'Кой месидж резонира повече преди разпределяне на бюджета.',x:'Бюджет: [€X]. Платформи: [Meta / Google / TikTok].'},
+  audience:{a:'',h:'При излагане на [стимул], аудиторията ще реагира с [очаквано поведение].',g:'Картографирай реакциите и кои персони са най-близо до конверсия.',x:''},
+  crisis:{a:'',h:'[Тип отговор] ще стабилизира настроенията по-бързо от [алтернативата].',g:'Симулирай реакцията при PR криза и тествай стратегии.',x:'Причина: [опиши]. Текущо настроение: [+/0/-].'},
+}
+function applyT(k){
+  if(!k||!T[k])return
+  const t=T[k]
+  document.getElementById('fa').value=t.a
+  document.getElementById('fh').value=t.h
+  document.getElementById('fg2').value=t.g
+  document.getElementById('fx').value=t.x
+  mkPrev()
+}
+function saveB(){
+  const b=document.querySelector('.btn-save')
+  b.textContent='✓ Запазено';b.style.background='#34c759'
+  setTimeout(()=>{b.textContent='Запази';b.style.background=''},2200)
+}
+function copyB(){
+  navigator.clipboard?.writeText(document.getElementById('bptext').textContent)
+  const b=document.querySelector('.btn-copy')
+  b.textContent='✓ Копирано'
+  setTimeout(()=>{b.textContent='Копирай'},2000)
+}
+
+// Graph
+function drawG(){
+  const svg=document.getElementById('gg')
+  if(svg.children.length>2)return
+  const nodes=[
+    {x:350,y:270,r:18,c:'#0071e3',l:'Nike AW25'},
+    {x:190,y:145,r:10,c:'#34c759',l:'Клиент М.'},
+    {x:510,y:145,r:10,c:'#ff3b30',l:'Скептик К.'},
+    {x:125,y:290,r:10,c:'#34c759',l:'Лоялен Т.'},
+    {x:575,y:290,r:10,c:'#34c759',l:'Адвокат П.'},
+    {x:215,y:415,r:10,c:'#8e8e93',l:'Неутрален'},
+    {x:485,y:415,r:10,c:'#0071e3',l:'Инфлуенсър'},
+    {x:350,y:105,r:10,c:'#5856d6',l:'Изследовател'},
+    {x:170,y:440,r:8,c:'#34c759',l:'Ранен К.'},
+    {x:530,y:440,r:8,c:'#ff3b30',l:'Стойност'},
+    {x:350,y:460,r:8,c:'#8e8e93',l:'Оферта Д.'},
+  ]
+  const edges=[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,9],[0,10],[1,3],[1,5],[2,4],[4,6],[6,10],[3,8],[7,1],[7,2],[5,10],[1,6]]
+
+  edges.forEach(([a,b])=>{
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line')
+    l.setAttribute('x1',nodes[a].x);l.setAttribute('y1',nodes[a].y)
+    l.setAttribute('x2',nodes[b].x);l.setAttribute('y2',nodes[b].y)
+    l.setAttribute('stroke','#e5e5ea');l.setAttribute('stroke-width','1.5')
+    svg.appendChild(l)
+  })
+
+  nodes.forEach(n=>{
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g')
+    const ci=document.createElementNS('http://www.w3.org/2000/svg','circle')
+    ci.setAttribute('cx',n.x);ci.setAttribute('cy',n.y);ci.setAttribute('r',n.r)
+    ci.setAttribute('fill',n.c+'18');ci.setAttribute('stroke',n.c);ci.setAttribute('stroke-width','1.5')
+    const tx=document.createElementNS('http://www.w3.org/2000/svg','text')
+    tx.setAttribute('x',n.x);tx.setAttribute('y',n.y+n.r+12)
+    tx.setAttribute('text-anchor','middle');tx.setAttribute('fill','#8e8e93')
+    tx.setAttribute('font-size','9');tx.setAttribute('font-family','-apple-system,sans-serif')
+    tx.textContent=n.l
+    g.appendChild(ci);g.appendChild(tx);svg.appendChild(g)
+  })
+}
+</script>
+</body>
+</html>
